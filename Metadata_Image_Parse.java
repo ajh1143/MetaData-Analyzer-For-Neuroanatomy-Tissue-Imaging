@@ -19,46 +19,37 @@ public class Metadata_Image_Parse{
       System.out.println("Enter the path to your first file. Example: Right click on your file --> Properties --> Location");
       Scanner console = new Scanner(System.in);
       String pathName = console.next();
-      
-    
+  
     //Create folder content, create matrix to collect file names, create output file, initialize Printstream Name + Directory  
       File folder = new File(pathName);  
       File [] targetFolder = folder.listFiles();
       File outPut = new File(pathName+"\\ExifOutput.txt");
       PrintStream  print = new PrintStream(outPut);
-      
     
     //Create for loop to begin iterating through target folder from user 
       for(int a = 0; a < targetFolder.length; a++){
     
-    
     //Check if directory contains files, save file name as "getName" variable    
       if(targetFolder[a].isFile()){
       String getName = targetFolder[a].getName();
-    
-    
+     
     //Boolean check if getName file is TIF or TXT, if TXT continue processing
     //If TIF, continue checking     
       if(getName.contains("txt")){
       FileReader fr = new FileReader(targetFolder[a]);            
       BufferedReader br = new BufferedReader(fr);    
       String data;                 
-    
-    
+     
     //While there is a line to read, do                   
       while((data = br.readLine()) != null){
-    
-    
+     
     //If the file contains "MetaData", begin to tokenize string, split where "<" present              
       if(data.contains("MetaData")){               
       String [] tokenMake = data.split("<");
-    
-    
+     
     //For loop initialized to length of "tokenMake"                  
       for (int i=0; i < tokenMake.length; i++){
-      
-    
-    
+   
     //If "stage position x" present, tokenize with splits after "\", printstream and replace .txt with .tif                    
       if(tokenMake[i].contains("stage-position-x")){
       String[] positionX = tokenMake[i].split("\"");
@@ -66,8 +57,7 @@ public class Metadata_Image_Parse{
       Double X = (Double.valueOf(xRaw))*conversionFactor;
       print.print(getName.replace(".txt", "")+ ".tif; ; ("+ X +", ");  
       }
-     
-     
+      
      //If "stage position y" present, tokenize with split "\"
      //printstream y position to same line as x, then set a new line                        
       else if(tokenMake[i].contains("stage-position-y")){
@@ -80,8 +70,7 @@ public class Metadata_Image_Parse{
       }               
     }//close(for i)
   }//close(if metadata)
-      
-
+ 
     //If no file found, then close program               
     else{
     System.out.println();
